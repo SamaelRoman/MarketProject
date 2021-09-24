@@ -1,0 +1,48 @@
+﻿@model MyMarketProject.Models.Category
+@using (Ajax.BeginForm("Add", "Category", null, ajaxOptions: new AjaxOptions() { Confirm = "Создать категорию?", HttpMethod = "post" , OnSuccess = "SuccesAddToDb", OnFailure = "FailureAddTodb"}, htmlAttributes: new { @class = "AddForm" }))
+{
+    @Html.LabelFor(C => C.Name, htmlAttributes: new { @class = "AddFormLabel" })
+    @Html.EditorFor(C => C.Name)
+    @Html.ValidationMessageFor(C => C.Name,null,htmlAttributes : new { @class = "ValidateExcMsg"})
+    <br />
+    <br />
+    <span class="AddFormLabel">Бренды в категори:</span>
+    <ul class="nav AddElList">
+        @if (ViewBag.SiteBrands != null)
+        {
+            foreach (var B in ViewBag.SiteBrands as List<MyMarketProject.Models.Brand>)
+            {
+                <li>
+                    <label class="AddFormNavLabel">
+                        <input type="checkbox" name="CategoryBrands" value="@B.Id" />@B.Name
+                    </label>
+                </li>
+            }
+        }
+    </ul>
+    <input type="submit" value="Добавить" class="btn AddToDbBtn" />
+}
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script>
+    document.querySelector(".AddElList").addEventListener("click", function (e) {
+        if (e.target.tagName == "LABEL") {
+            let CurrentInput = e.target.querySelector("input");
+            if (CurrentInput.checked != true) {
+                e.target.classList.add("Active-Label");
+            }
+            else {
+                e.target.classList.remove("Active-Label");
+            }
+        }
+    });
+    function SuccesAddToDb(data) {
+        let form = document.querySelector(".AddForm");       
+        alert(data);
+        form.reset();
+    }
+    function FailureAddTodb(data) {
+        alert("Произашла ошибка попробуйте позже")
+    }
+</script>

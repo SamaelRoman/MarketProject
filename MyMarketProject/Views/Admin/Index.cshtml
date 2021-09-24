@@ -1,0 +1,36 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LayoutWithOutSidebar.cshtml";
+    ViewBag.Title = "Админ панель";
+}
+<div class="container">
+    <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12 Page-Background-continer">
+        <ul class="nav navbar-nav AP-Nav">
+            <li class="AP-Nav-Li">@using(Ajax.BeginForm("Add", "Brand", ajaxOptions: new AjaxOptions(){HttpMethod = "get", UpdateTargetId = "AP-Content" }))
+            {
+                <input type="submit" value="Добавить бренд"  class="btn AP-btn"/>
+            }</li>
+            <li class="AP-Nav-Li">@using (Ajax.BeginForm("Add", "Category", ajaxOptions: new AjaxOptions() { HttpMethod = "get", UpdateTargetId = "AP-Content" }))
+            {
+                <input type="submit" value="Добавить категорию"  class="btn AP-btn"/>
+            }</li>
+            <li class="AP-Nav-Li">@using(Ajax.BeginForm("Add", "Product", ajaxOptions: new AjaxOptions() { HttpMethod = "get", UpdateTargetId = "AP-Content" }))
+            {
+                <input type="submit" value="Добавить продукт"  class="btn AP-btn"/>
+            }</li>
+            <li class="AP-Nav-Li">@using(Ajax.BeginForm("EditOrDeleteBrandTable", "Brand", ajaxOptions: new AjaxOptions() { HttpMethod = "get", UpdateTargetId = "AP-Content" }))
+            {
+                <input type="submit" value="Редактировать бренды"  class="btn AP-btn"/>
+            }</li>
+            <li class="AP-Nav-Li">@using(Ajax.BeginForm("EditOrDeleteCategoryTable", "Category", ajaxOptions: new AjaxOptions() { HttpMethod = "get", UpdateTargetId = "AP-Content" }))
+            {
+                <input type="submit" value="Редактировать категории"  class="btn AP-btn"/>
+            }</li>
+        </ul>
+        <div class="col-md-12" id="AP-Content">
+
+        </div>
+    </div>
+
+</div>
+

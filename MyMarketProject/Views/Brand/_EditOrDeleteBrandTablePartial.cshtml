@@ -1,0 +1,57 @@
+﻿@model List<MyMarketProject.Models.Brand>
+<table class="ElEditOrDeleteTable">
+    <tr>
+        <th>Id</th>
+        <th>Название бренда</th>
+        <th>Редактировать</th>
+        <th>Удалить</th>
+    </tr>
+    @foreach (var B in Model)
+    {
+        <tr>
+            <td class="tdId">@B.Id</td>
+            <td class="tdName">@B.Name</td>
+            <td><button class="btn-info EditElButton">Редактировать</button></td>
+            <td>
+                @using (Ajax.BeginForm("Delete", "Brand", ajaxOptions: new AjaxOptions() { Confirm = $"Вы действительно хотите удалить бренд {B.Name}?", UpdateTargetId= "AP-Content", HttpMethod = "delete" }))
+                {
+                    <input type="hidden" value="@B.Id" name="BrandId"/>
+                    <input type="submit" value="Удалить" class="btn btn-danger DeleteElButton"/>
+                }
+            </td>
+        </tr>
+    }
+</table>
+<hr />
+<table class="ElEditTable">
+    <tr>
+        <th>Id</th>
+        <th>Название бренда</th>
+        <th>Сохранить</th>
+    </tr>
+    <tr id="ElEditContainer">
+       @using(Ajax.BeginForm("Edit","Brand",ajaxOptions: new AjaxOptions() {Confirm="Сохранить изменения?", HttpMethod = "patch", UpdateTargetId = "AP-Content" },htmlAttributes: new {@class = "ElEditForm", id = "ElEditForm" }))
+       {
+            <td class="hidden"><input type="hidden" name="BrandId" id="BrandIdHidden" form="ElEditForm"/></td>
+            <td><input type="text" disabled  id="BrandId" form="ElEditForm"/></td>
+            <td><input type="text" name="BrandName" id="BrandName" form="ElEditForm"/></td>
+            <td><input type="submit" value="Сохранить" class="btn-info" form="ElEditForm"/></td>      
+        }
+    </tr>
+</table>
+<script>
+    document.querySelector(".ElEditOrDeleteTable").addEventListener("click", function (e) {
+        if (e.target.tagName == "BUTTON" && e.target.classList.contains("EditElButton")) {
+            let trs = e.target.closest(".ElEditOrDeleteTable").querySelectorAll("tr");
+            for (let tr of  trs){
+                tr.style.backgroundColor = "White";
+            }
+            e.target.closest("tr").style.backgroundColor = "Yellow";
+            let CurrentId = e.target.closest("tr").querySelector(".tdId").innerText;
+            let CurrentName = e.target.closest("tr").querySelector(".tdName").innerText;
+            document.querySelector("#BrandId").value = CurrentId;
+            document.querySelector("#BrandIdHidden").value = CurrentId;
+            document.querySelector("#BrandName").value = CurrentName;
+        }
+    })
+</script>

@@ -1,0 +1,51 @@
+﻿@model MyMarketProject.Models.Product
+@{
+    ViewBag.Title = $"Редактирование {Model.Name}";
+    Layout = "~/Views/Shared/_LayoutWithOutSidebar.cshtml";
+}
+
+<div class="container">
+    <div class="col-md-12 col-xs-12 col-lg-12 col-sm-12 Page-Background-continer" id="AP-Content">
+        @using (Html.BeginForm("Edit", "Product", method: FormMethod.Post, htmlAttributes: new { @class = "AddForm" , enctype = "multipart/form-data" }))
+        {
+            @Html.LabelFor(P => P.Id, htmlAttributes: new { @class = "AddFormLabel" })
+            @Html.DisplayFor(P => P.Id)
+            @Html.HiddenFor(P=>P.Id)
+            <br />
+            @Html.LabelFor(P => P.Name, htmlAttributes: new { @class = "AddFormLabel" })
+            @Html.TextBoxFor(P => P.Name, htmlAttributes: new { @class = "inputText" })
+            @Html.ValidationMessageFor(P => P.Name, null, htmlAttributes: new { @class = "ValidateExcMsg" })
+            <br />
+            @Html.LabelFor(P => P.Price, htmlAttributes: new { @class = "AddFormLabel" })
+            @Html.TextBoxFor(P => P.Price, htmlAttributes: new { @class = "inputText" })
+            @Html.ValidationMessageFor(P => P.Price, null, htmlAttributes: new { @class = "ValidateExcMsg" })
+            <br />
+            @Html.LabelFor(P => P.Img, htmlAttributes: new { @class = "AddFormLabel" })
+            <input type="file" name="ProductImg" accept="image/*" required />
+            @Html.ValidationMessageFor(P => P.Img, null, htmlAttributes: new { @class = "ValidateExcMsg" })
+            <br />
+            @Html.LabelFor(P => P.Available, htmlAttributes: new { @class = "AddFormLabel" })
+            @Html.EditorFor(P => P.Available)
+            @Html.ValidationMessageFor(P => P.Available, null, htmlAttributes: new { @class = "ValidateExcMsg" })
+            <br />
+            @Html.LabelFor(P => P.Brand, htmlAttributes: new { @class = "AddFormLabel" })
+            <select name="BrandToProduct">
+                @foreach (var B in ViewBag.SiteBrands as List<MyMarketProject.Models.Brand>)
+                {
+                    <option value="@B.Id" @(B.Id == Model.BrandId ? "selected" : "")>@B.Name</option>
+                }
+            </select>
+            <br />
+            @Html.LabelFor(P => P.Category, htmlAttributes: new { @class = "AddFormLabel" })
+            <select name="CategoryToProduct">
+                @foreach (var C in ViewBag.SiteCategories as List<MyMarketProject.Models.Category>)
+                {
+                    <option value="@C.Id" @(C.Id == Model.CategoryId ? "selected" : "")>@C.Name</option>
+                }
+            </select>
+            <br />
+            <input type="submit" value="Сохранить"/>
+        }
+    </div>
+</div>
+

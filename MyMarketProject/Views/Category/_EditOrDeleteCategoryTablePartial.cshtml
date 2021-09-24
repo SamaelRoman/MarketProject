@@ -1,0 +1,51 @@
+﻿@model List<MyMarketProject.Models.Category>
+<table class="ElEditOrDeleteTable">
+    <tr>
+        <th>Id</th>
+        <th>Название бренда</th>
+        <th>Редактировать</th>
+        <th>Удалить</th>
+    </tr>
+    @foreach (var C in Model)
+    {
+        <tr>
+            <td class="tdId">@C.Id</td>
+            <td class="tdName">@C.Name</td>
+            <td>
+                @using (Ajax.BeginForm("Edit", "Category", ajaxOptions: new AjaxOptions() { HttpMethod = "get", UpdateTargetId = "EditCategoryBody" }))
+                {
+                    <input type="hidden" value="@C.Id" name="EditCategoryId" />
+                    <input type="submit" class="btn-info EditElButton" value="Редактировать" />
+                }
+            </td>
+            <td>
+                @using (Ajax.BeginForm("Delete", "Category", ajaxOptions: new AjaxOptions() { Confirm = $"Вы действительно хотите удалить категорию {C.Name}?", UpdateTargetId = "AP-Content", HttpMethod = "delete", OnSuccess = "DeleteSucces",OnFailure = "DeleteFailure"}))
+                {
+                    <input type="hidden" value="@C.Id" name="CategoryId" />
+                    <input type="submit" value="Удалить" class="btn btn-danger DeleteElButton" />
+                }
+            </td>
+        </tr>
+    }
+</table>
+<hr />
+<div id="EditCategoryBody">
+
+</div>
+<script>
+    function DeleteSucces(data) {
+        alert("Категория успешно удалена!");
+    }
+    function DeleteFailure(data) {
+        alert(data)
+    }
+    document.querySelector(".ElEditOrDeleteTable").addEventListener("click", function (e) {
+        if (e.target.tagName == "INPUT" && e.target.classList.contains("EditElButton")) {
+            let trs = e.target.closest(".ElEditOrDeleteTable").querySelectorAll("tr");
+            for (let tr of  trs){
+                tr.style.backgroundColor = "White";
+            }
+            e.target.closest("tr").style.backgroundColor = "Yellow";
+        }
+    })
+</script>

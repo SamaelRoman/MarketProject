@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="nav navbar-default">
+        <div class="container-fluid Header">
+            <div class="row">
+                <div class="navbar-header col-md-2 col-md-offset-1">
+                    <button class="navbar-toggle" data-toggle="collapse" data-target="#NavBarCollapseId">
+                        <i class="icon-bar"></i>
+                        <i class="icon-bar"></i>
+                        <i class="icon-bar"></i>
+                    </button>
+                    <div class="navbar-brand">@Html.ActionLink("Veranda", "Index", "Home")</div>
+                </div>
+                <div class="collapse navbar-collapse" id="NavBarCollapseId">
+                    <div class="col-md-6">
+                        <div class="btn-group search col-md-12">
+                            @using (Html.BeginForm("Search", "Category", method: FormMethod.Get))
+                            {
+                                <input type="text" class="btn btn-md FirstElOfSearch" name="SearchText" placeholder="Найти">
+                                <input type="submit" class=" btn btn-md SecondElOfSearch" value="найти" />
+                            }
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Partial("_LoginPartial")
+                    </div>
+                    <div class="col-md-10 col-md-offset-2">
+                        <ul class="nav navbar-nav CategoriesListBar">
+                            @if (ViewBag.SiteCategories != null)
+                            {
+                                foreach (var C in ViewBag.SiteCategories as List<MyMarketProject.Models.Category>)
+                                {
+                                    <li class="drop">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">@C.Name<i class="caret"></i></a>
+                                        <ul class="dropdown-menu">
+                                            <li>@Html.ActionLink(C.Name, "Get", "Category", new { CategoryId = C.Id }, null)</li>
+                                            <li class="divider"></li>
+                                            @if (C.Brands != null)
+                                            {
+                                                foreach (var B in C.Brands)
+                                                {
+                                                    <li>@Html.ActionLink(B.Name, "Get", "Category", new { CategoryId = C.Id, BrandId = B.Id }, null)</li>
+                                                }
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid body-content">
+        <div class="col-md-2 col-md-offset-1 sidebar">
+
+                <button id="SedebarFilterClearForm" class="btn-link ClearForm">Очистить фильтры</button>
+                <span class="SortByTitle">Цена</span><br />
+                <div class="SortByBody">
+                    @{  string InputRangeMin = null;
+                        if(Request.Cookies.Get("RangeMin") != null)
+                        {
+                            InputRangeMin = Request.Cookies.Get("RangeMin").Value;
+                        }
+                        string InputRangeMax = null;
+                        if (Request.Cookies.Get("RangeMax") != null)
+                        {
+                            InputRangeMax = Request.Cookies.Get("RangeMax").Value;
+                        }
+                    }
+                    <div class="col-md-5 col-sm-12 col-xs-12 SortByEl">
+                        <span>От</span> <input type="text" id="RangeMin" class="SidebarFilterInput" onkeyup="this.value = this.value.replace(/[^\d]/g,'');" value="@(InputRangeMin ?? "")"/>
+                    </div>
+                    <div class="col-md-5 col-sm-12 col-xs-12 SortByEl">
+                        <span>До</span> <input type="text" id="RangeMax" class="SidebarFilterInput" onkeyup="this.value = this.value.replace(/[^\d]/g,'');" value="@(InputRangeMax ?? "")"/>
+                    </div>
+                    <div class="col-md-2 col-sm-12 col-xs-12 SortByEl">
+                        <button class="SidebarFilterInputOK">OK</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <hr class="col-md-12 col-sm-12 col-xs-12" />
+                </div>
+
+        </div>
+        <div class="col-md-8 Page-container" style="">
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 SortBy">
+                    <span><b>Сортировка</b></span>
+                    <button class="btn-link SortByBtnLink Active" data-sort-by="New">Новые</button>
+                    <button class="btn-link SortByBtnLink" data-sort-by="Ascending">от дорогих к дешевым</button>
+                    <button class="btn-link SortByBtnLink" data-sort-by="Descending">oт дешевых к дорогим</button>
+                </div>
+            </div>
+
+            <div class="row">
+                @RenderBody();
+                
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 hidden-sm hidden-xs Footer">
+
+                </div>
+            </div>
+        </div>
+    </footer>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/JUV")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/SiteScripts.js")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

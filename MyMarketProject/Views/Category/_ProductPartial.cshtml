@@ -1,0 +1,38 @@
+﻿@model MyMarketProject.Models.Product
+
+<div class="col-md-3 col-lg-3 col-sm-6 col-xs-12 ProductContainer">
+    <img src="~/Content/ProductImg/@Model.Img" class="ProductImg col-md-offset-3 col-xs-offset-3" width="120" height="155"/>
+    <span class="ProductTitle col-md-12 col-sm-12 col-lg-12 col-xs-12" title="@Model.Name">@Html.DisplayFor(P=>P.Name)</span>
+    <span class="ProductId col-md-12 col-sm-12 col-lg-12 col-xs-12">Код: @Html.DisplayFor(P=>P.Id)</span>
+    <span class="ProductPrice col-md-12 col-sm-12 col-lg-12 col-xs-12">@Html.DisplayFor(P=>P.Price) </span>
+    @using(Ajax.BeginForm("Buy","Cart", new AjaxOptions(){Confirm="Добавить в корзину?" }))
+    {
+        <input type="hidden" name="AddToCartProductId" value="@Model.Id" />
+        <input type="submit" class="btn ProductAddToCartBtn col-md-6 col-sm-12 col-lg-6 col-xs-12" value="Купить" />
+    }
+    <div class="col-md-6 ProductMorelinkWrap col-sm-12 col-lg-6 col-xs-12">
+        <a href="#" class="btn-link ProductMorelink">Подробнее</a>@*Реализовать метод просмотра продукта*@
+    </div>
+    @if(User.IsInRole("Admin"))
+    {
+        using (Html.BeginForm("Edit","Product",method: FormMethod.Get))
+        {
+            <input type="hidden" name="EditProdutId" value="@Model.Id"/>
+            <input type="submit" class="btn btn-primary ProductOperationBtn col-md-6 col-sm-12 col-lg-6 col-xs-12" value="Редактировать" />
+        }
+        using (Ajax.BeginForm("Delete", "Product", ajaxOptions: new AjaxOptions() { Confirm = $"Удалить продукт {Model.Name}?", HttpMethod = "delete",OnFailure="ProductDeleteFailure", OnSuccess="ProductDeleteSucces" }))
+        {
+            <input type="hidden" name="DeleteProdutId" value="@Model.Id"/>
+            <input type="submit" class="btn btn-danger ProductOperationBtn col-md-6 col-sm-12 col-lg-6 col-xs-12" value="Удалить"/>
+        }
+    }
+</div>
+<script>
+    function ProductDeleteFailure(data) {
+        alert(data.responseText);
+    }
+    function ProductDeleteSucces(data) {
+        alert(data);
+        window.location.reload();
+    }
+</script>

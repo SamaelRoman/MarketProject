@@ -1,0 +1,22 @@
+﻿@model MyMarketProject.Models.Brand
+@using (Ajax.BeginForm("Add", "Brand", new AjaxOptions() { Confirm = "Создать Бренд?", HttpMethod = "post", OnSuccess = "SuccesAddToDb", OnFailure = "FailureAddTodb" }, htmlAttributes: new { @class = "AddForm" }))
+{
+    @Html.LabelFor(B => B.Name, htmlAttributes: new { @class = "AddFormLabel" })
+    @Html.EditorFor(B => B.Name)
+    @Html.ValidationMessageFor(B => B.Name, null, htmlAttributes: new { @class = "ValidateExcMsg" })
+    <br />
+    <input type="submit" value="Добавить" class="btn AddToDbBtn" />
+}
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script>
+    function SuccesAddToDb(data) {
+        let form = document.querySelector(".AddForm");
+        alert(data);
+        form.reset();
+    }
+    function FailureAddTodb(data) {
+        alert("Произашла ошибка попробуйте позже")
+    }
+</script>

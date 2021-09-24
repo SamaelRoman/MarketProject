@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="nav navbar-default">
+        <div class="container-fluid Header">
+            <div class="row">
+                <div class="navbar-header col-md-2 col-md-offset-1">
+                    <button class="navbar-toggle" data-toggle="collapse" data-target="#NavBarCollapseId">
+                        <i class="icon-bar"></i>
+                        <i class="icon-bar"></i>
+                        <i class="icon-bar"></i>
+                    </button>
+                    <div class="navbar-brand">@Html.ActionLink("Veranda", "Index", "Home")</div>
+                </div>
+                <div class="collapse navbar-collapse" id="NavBarCollapseId">
+                    <div class="col-md-6">
+                        <div class="btn-group search col-md-12">
+                            <input type="text" class="btn btn-md FirstElOfSearch" placeholder="Найти"><input type="submit" class=" btn btn-md SecondElOfSearch" value="найти" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        @Html.Partial("_LoginPartial")
+                    </div>
+                    <div class="col-md-10 col-md-offset-2">
+                        <ul class="nav navbar-nav CategoriesListBar">
+                            @if (ViewBag.SiteCategories != null)
+                            {
+                                foreach (var C in ViewBag.SiteCategories as List<MyMarketProject.Models.Category>)
+                                {
+                                    <li class="drop">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">@C.Name<i class="caret"></i></a>
+                                        <ul class="dropdown-menu">
+                                            <li>@Html.ActionLink(C.Name, "Get", "Category", new { CategoryId = C.Id }, null)</li>
+                                            <li class="divider"></li>
+                                            @if (C.Brands != null)
+                                            {
+                                                foreach (var B in C.Brands)
+                                                {
+                                                    <li>@Html.ActionLink(B.Name, "Get", "Category", new { CategoryId = C.Id, BrandId = B.Id }, null)</li>
+                                                }
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid body-content">
+        <div class="row">
+            @RenderBody();
+        </div>
+    </div>
+    <footer>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 hidden-sm hidden-xs Footer">
+
+                </div>
+            </div>
+        </div>
+    </footer>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/JUV")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/SiteScripts.js")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

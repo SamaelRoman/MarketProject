@@ -1,0 +1,23 @@
+﻿@model MyMarketProject.Models.Category
+@using (Ajax.BeginForm("Edit", "Category", ajaxOptions: new AjaxOptions() { HttpMethod = "patch", Confirm = "Сохранить изменения?", UpdateTargetId = "AP-Content" }))
+{
+    @Html.LabelFor(C => C.Id);
+    @Html.DisplayFor(C => C.Id);
+    @Html.HiddenFor(C => C.Id);
+    <br />
+    @Html.LabelFor(C => C.Name);
+    @Html.EditorFor(C => C.Name);
+    @Html.ValidationMessageFor(C => C.Name);
+    <br />
+
+    <ul class="BrandsInCategoryUl">
+        @foreach (var B in ViewBag.SiteBrands as List<MyMarketProject.Models.Brand>)
+        {
+            <li><label><input type="checkbox" name="BrandsInCategory" value="@B.Id" @(Model.Brands.Contains(B) ? "checked=\"checked\"" : "") />@B.Name</label></li>
+        }
+    </ul>
+    <input type="submit" value="Сохранить" />
+}
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>

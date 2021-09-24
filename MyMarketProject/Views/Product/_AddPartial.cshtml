@@ -1,0 +1,51 @@
+﻿@model MyMarketProject.Models.Product
+
+@using (Ajax.BeginForm("Add", "Product", ajaxOptions: new AjaxOptions() { Confirm = "Создать Продукт?", HttpMethod = "post", OnSuccess = "SuccesAddToDb", OnFailure = "FailureAddTodb" }, htmlAttributes: new { @class = "AddForm", enctype = "multipart/form-data" }))
+{
+    @Html.LabelFor(P => P.Name, htmlAttributes: new { @class = "AddFormLabel" })
+    @Html.EditorFor(P => P.Name)
+    @Html.ValidationMessageFor(P => P.Name, null, htmlAttributes: new { @class = "ValidateExcMsg" })
+    <br />
+    @Html.LabelFor(P => P.Price, htmlAttributes: new { @class = "AddFormLabel" })
+    @Html.EditorFor(P => P.Price)
+    @Html.ValidationMessageFor(P => P.Price, null, htmlAttributes: new { @class = "ValidateExcMsg" })
+    <br />
+    @Html.LabelFor(P => P.Img, htmlAttributes: new { @class = "AddFormLabel" })
+    <input type="file" name="ProductImg" accept="image/*"  required/>
+    @Html.ValidationMessageFor(P => P.Img, null, htmlAttributes: new { @class = "ValidateExcMsg" })
+    <br />
+    @Html.LabelFor(P => P.Available, htmlAttributes: new { @class = "AddFormLabel" })
+    @Html.EditorFor(P => P.Available)
+    @Html.ValidationMessageFor(P => P.Available, null, htmlAttributes: new { @class = "ValidateExcMsg" })
+    <br />
+    @Html.LabelFor(P => P.Brand, htmlAttributes: new { @class = "AddFormLabel" })
+    <select name="BrandToProduct">
+        @foreach (var B in ViewBag.SiteBrands as List<MyMarketProject.Models.Brand>)
+        {
+            <option value="@B.Id">@B.Name</option>
+        }
+    </select>
+    <br />
+    @Html.LabelFor(P => P.Category, htmlAttributes: new { @class = "AddFormLabel" })
+    <select name="CategoryToProduct">
+        @foreach (var C in ViewBag.SiteCategories as List<MyMarketProject.Models.Category>)
+        {
+            <option value="@C.Id">@C.Name</option>
+        }
+    </select>
+    <br />
+    <input type="submit" value="Добавить" class="btn AddToDbBtn" />
+}
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script>
+    function SuccesAddToDb(data) {
+        let form = document.querySelector(".AddForm");
+        alert(data);
+        form.reset();
+    }
+    function FailureAddTodb(data) {
+        alert("Произашла ошибка попробуйте позже")
+    }
+</script>
