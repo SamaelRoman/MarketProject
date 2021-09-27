@@ -59,5 +59,24 @@ namespace MyMarketProject.Services
             var result = await repository.GetProductsAsync();
             return result.Where(P => P.Name.NewContains(SearchText,StringComparison.OrdinalIgnoreCase));
         }
+
+        public bool Add(Category C, List<int> CategoryBrands)
+        {
+            foreach(var B in CategoryBrands)
+            {
+                C.Brands.Add(repository.GetBrand(B));
+            }
+            return repository.AddCategory(C);
+            
+        }
+
+        public async Task<bool> AddAsync(Category C,List<int> CategoryBrands)
+        {
+            foreach(var B in CategoryBrands)
+            {
+                C.Brands.Add(await repository.GetBrandAsync(B));
+            }
+            return await repository.AddCategoryAsync(C);
+        }
     }
 }

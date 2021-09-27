@@ -29,5 +29,28 @@ namespace MyMarketProject.Repositories
         bool DeleteProduct(int Id);
         Task<bool> DeleteProductAsync(int Id);
 
+        //Получение всех категорий
+        IEnumerable<Category> GetCategories();
+        Task<IEnumerable<Category>> GetCategoriesAsync();
+        //Получение категории по id
+        Category GetCategory(int Id);
+        Task<Category> GetCategoryAsync(int Id);
+        //Добавление категории
+        bool AddCategory(Category category);
+        Task<bool> AddCategoryAsync(Category category);
+        //Редактирование категории
+        //Удаление категории
+
+        //Получение всех брендов
+        IEnumerable<Brand> GetBrands();
+        Task<IEnumerable<Brand>> GetBrandsAsync();
+        //Получение бренда по id
+        Brand GetBrand(int Id);
+        Task<Brand> GetBrandAsync(int Id);
+        //Добавление бренда
+        //Редактирование бренда
+        //Удаление бренда
+
+
     }
 }
